@@ -3,7 +3,6 @@ package util
 import (
   "encoding/json"
   "net/http"
-  "reflect"
 )
 
 type CustomFunction = func(*http.Request) (interface{}, *HTTPError)
@@ -11,7 +10,7 @@ type CustomFunction = func(*http.Request) (interface{}, *HTTPError)
 func Response(w http.ResponseWriter, payload interface{}) {
   w.Header().Set("Content-Type", "application/json")
   w.WriteHeader(http.StatusOK)
-  if reflect.TypeOf(payload) == reflect.TypeOf("") {
+  if payload == GENERIC_SUCCESS_RESPONSE {
     payload = map[string]interface{}{
       "message": "Success",
       "status": http.StatusOK,
@@ -24,7 +23,7 @@ func Error(w http.ResponseWriter, err *HTTPError) {
   w.Header().Set("Content-Type", "application/json")
   w.WriteHeader(err.StatusCode)
   body := map[string]interface{}{
-    "message": err.Message,
+    "error": err.Message,
     "status": err.StatusCode,
   }
   json.NewEncoder(w).Encode(body)
