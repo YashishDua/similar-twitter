@@ -1,0 +1,6 @@
+#!/bin/bash
+
+FILELOC="dbschema.sql"
+
+psql -d postman-twitter -f $FILELOC
+echo "--------SQL SCRIPT SUCCESS--------"

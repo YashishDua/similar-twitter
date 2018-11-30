@@ -22,3 +22,11 @@ func InternalServerError(message string) *HTTPError {
 		Message:    message,
 	}
 }
+
+// Unauthorized : Returns a 401 error encapsulated as *HTTPError
+func Unauthorized(message string) *HTTPError {
+	return &HTTPError{
+		StatusCode: http.StatusUnauthorized,
+		Message:    message,
+	}
+}
