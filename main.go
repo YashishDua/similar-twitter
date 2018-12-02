@@ -13,6 +13,28 @@ import (
   "postman-twitter/endpoints"
   "postman-twitter/redis"
 )
+const (
+  AUTH_REQ bool = true
+  AUTH_NOT_REQ bool = false
+)
+
+func routes() chi.Router {
+	router := chi.NewRouter()
+  router.Get("/ping", middleware.ResponseWrapper(Ping, AUTH_NOT_REQ))
+
+	router.Route("/user", func(r chi.Router) {
+    r.Post("/follow", middleware.ResponseWrapper(endpoints.FollowHandler, AUTH_REQ))
+    r.Post("/unfollow", middleware.ResponseWrapper(endpoints.UnFollowHandler, AUTH_REQ))
+	})
+
+  router.Route("/auth", func(r chi.Router) {
+    r.Post("/signup", middleware.ResponseWrapper(endpoints.SignUpHandler, AUTH_NOT_REQ))
+    r.Post("/signin", middleware.ResponseWrapper(endpoints.SignInHandler, AUTH_NOT_REQ))
+    r.Post("/signout", middleware.ResponseWrapper(endpoints.LogOutHandler, AUTH_REQ))
+	})
+
+	return router
+}
 
 func main() {
   config.Init()
@@ -22,19 +44,13 @@ func main() {
 
   router := chi.NewRouter()
   router.Use(chiMiddleWare.Logger)
-  router.Get("/", middleware.ResponseWrapper(Hello, util.AUTH_NOT_REQ))
-
-  router.Post("/signup", middleware.ResponseWrapper(endpoints.SignUpHandler, util.AUTH_NOT_REQ))
-  router.Post("/signin", middleware.ResponseWrapper(endpoints.SignInHandler, util.AUTH_NOT_REQ))
-
-  router.Post("/signout", middleware.ResponseWrapper(endpoints.LogOutHandler, util.AUTH_REQ))
-  router.Post("/follow", middleware.ResponseWrapper(endpoints.FollowHandler, util.AUTH_REQ))
+  router.Mount("/api/v1", routes())
 
   fmt.Println("Running on " + config.ServerConfig.Port)
   log.Fatal(http.ListenAndServe(":" + config.ServerConfig.Port, router))
 }
 
 //HealhCheck API
-func Hello(r *http.Request) (interface{}, *util.HTTPError) {
-  return "Under Construction", nil
+func Ping(r *http.Request) (interface{}, *util.HTTPError) {
+  return "Pong", nil
 }

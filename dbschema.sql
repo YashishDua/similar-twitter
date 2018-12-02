@@ -17,5 +17,6 @@ CREATE TABLE user_auth (
 
 CREATE TABLE follow (
   following_user_id UUID NOT NULL,
-  followed_by_user_id UUID NOT NULL
+  followed_by_user_id UUID NOT NULL,
+  PRIMARY KEY (following_user_id, followed_by_user_id)
 );

@@ -11,8 +11,6 @@ const (
   SQL_ERROR string = "Unable to perform SQL query"
 
   //AUTH
-  AUTH_REQ bool = true
-  AUTH_NOT_REQ bool = false
   USER_DOES_NOT_EXIST_ERROR string = "User doesn't exist"
   USER_ALREADY_EXIST_ERROR string = "User already exist"
   MISMATCH_PASSWORD_ERROR string = "Password didn't match"
@@ -22,5 +20,4 @@ const (
   NO_BEARER_PRESENT string = "No Bearer in Authorization Header"
   JWT_ERROR string = "Error while creating JWT token"
   INVALID_JWT string = "Invalid Auth Token"
-
 )
