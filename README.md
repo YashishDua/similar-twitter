@@ -20,6 +20,9 @@ Note: Just for reference. Go builds everything from vendor.
 1. Install Go and set up ENVIRONMENT (https://golang.org/doc/install)
 2. Clone repository to $HOME/go/src/
 
+## Global packages to be installed
+1. Run -> go get -u github.com/kardianos/govendor
+
 ## Postgres
 1. Install Postgres
 2. Create a database named, 'postman-twitter'
