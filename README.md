@@ -21,9 +21,13 @@ Note: Just for reference. Go builds everything from vendor.
 2. Clone repository to $HOME/go/src/
 
 ## Postgres
-1. Install Postgres 
+1. Install Postgres
 2. Create a database named, 'postman-twitter'
-3. Run `db` bash script present in the project root to execute psql db schema on local
+3. Open /database/init_db.go and set username and database value.
+```
+"user=yashishdua dbname=postman-twitter sslmode=disable"
+```
+4. Run `db` bash script present in the project root to execute psql db schema on local
 
 ```bash
 sh db
@@ -46,12 +50,12 @@ sh run
 
 ## Signup
 
-Endpoint: 
+Endpoint:
 ```
 /api/v1/auth/signup
 ```
 Method: POST <br>
-Body: 
+Body:
 ```json
 {
 	"username": "yashishdua",
@@ -61,29 +65,30 @@ Body:
 
 ## Signin
 
-Endpoint: 
+Endpoint:
 ```
 /api/v1/auth/signin
 ```
 Method: POST <br>
-Body: 
+Body:
 ```json
 {
 	"username": "yashishdua",
 	"password": "test"
 }
-``` 
+```
 
 Successful Response:
 ```json
 {
-  "jwt_token": "eyJhbGciOiJIUzI1NiIsInR5c...."
+  "jwt_token": "eyJhbGciOiJIUzI1NiIsInR5c....",
+	"user_id": "8559ab00-8a02-487e-8b82-3adbf4fbe69e"
 }
 ```
 
 ## Signout
 
-Endpoint: 
+Endpoint:
 ```
 /api/v1/auth/signout
 ```
@@ -97,9 +102,9 @@ Value: Bearer <jwt_token>
 
 ## Follow
 ASSUMPTION: You are providing valid user id <br>
-Endpoint: 
+Endpoint:
 ```
-/api/v1/user/follow 
+/api/v1/user/{userID}/follow
 ```
 Method: POST <br>
 Header:
@@ -107,20 +112,19 @@ Header:
 Key: Authorization
 Value: Bearer <jwt_token>
 ```
-Body: 
+Body:
 
 ```json
 {
-	"following_user_id": "8559ab00-8a02-487e-8b82-3adbf4fbe69e",
 	"followed_by_user_id": "8559ab00-8a02-487e-8b82-3adbf4fbe99e"
 }
 ```
 
 ## UnFollow
 ASSUMPTION: You are providing valid user id <br>
-Endpoint: 
+Endpoint:
 ```
-/api/v1/user/unfollow
+/api/v1/user/{userID}/unfollow
 ```
 Method: POST <br>
 Header:
@@ -128,11 +132,10 @@ Header:
 Key: Authorization
 Value: Bearer <jwt_token>
 ```
-Body: 
+Body:
 
 ```json
 {
-	"following_user_id": "8559ab00-8a02-487e-8b82-3adbf4fbe69e",
 	"followed_by_user_id": "8559ab00-8a02-487e-8b82-3adbf4fbe99e"
 }
 ```
@@ -141,6 +144,3 @@ Body:
 
 ### These APIs are too naive, lot more to improve here!
 Singing off.
-
-
-

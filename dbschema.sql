@@ -9,12 +9,14 @@ CREATE EXTENSION pgcrypto;
 
 
 -- CREATING TABLES
+
+-- name: create-user-auth
 CREATE TABLE user_auth (
   user_id UUID UNIQUE DEFAULT gen_random_uuid(),
   username VARCHAR(50) PRIMARY KEY,
   password TEXT
 );
-
+-- name: create-follow
 CREATE TABLE follow (
   following_user_id UUID NOT NULL,
   followed_by_user_id UUID NOT NULL,

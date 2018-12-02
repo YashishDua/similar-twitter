@@ -9,6 +9,12 @@
 			"revisionTime": "2018-09-21T17:23:15Z"
 		},
 		{
+			"checksumSHA1": "y2/wlPsexgYRaTmGgkEWBGNodJM=",
+			"path": "github.com/gchaincl/dotsql",
+			"revision": "f8e452f37f648d9ffee122eeb50bd986dff3c4ca",
+			"revisionTime": "2018-10-22T06:31:18Z"
+		},
+		{
 			"checksumSHA1": "2Ae4bfJqmW2ktRsSP+ARgkr1JEc=",
 			"path": "github.com/go-chi/chi",
 			"revision": "263880db92251ff501a733d7fdb8f5fb026ac548",

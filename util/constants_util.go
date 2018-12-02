@@ -9,6 +9,7 @@ const (
   DECODING_ERROR string = "Error in decoding the request body"
   SALTING_ERROR string = "Error while salting password"
   SQL_ERROR string = "Unable to perform SQL query"
+  URL_QUERY_ERROR string = "Query parameters required"
 
   //AUTH
   USER_DOES_NOT_EXIST_ERROR string = "User doesn't exist"

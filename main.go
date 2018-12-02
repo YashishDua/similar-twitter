@@ -23,8 +23,8 @@ func routes() chi.Router {
   router.Get("/ping", middleware.ResponseWrapper(Ping, AUTH_NOT_REQ))
 
 	router.Route("/user", func(r chi.Router) {
-    r.Post("/follow", middleware.ResponseWrapper(endpoints.FollowHandler, AUTH_REQ))
-    r.Post("/unfollow", middleware.ResponseWrapper(endpoints.UnFollowHandler, AUTH_REQ))
+    r.Post("/{userID}/follow", middleware.ResponseWrapper(endpoints.FollowHandler, AUTH_REQ))
+    r.Post("/{userID}/unfollow", middleware.ResponseWrapper(endpoints.UnFollowHandler, AUTH_REQ))
 	})
 
   router.Route("/auth", func(r chi.Router) {

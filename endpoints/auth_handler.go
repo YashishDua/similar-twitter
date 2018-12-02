@@ -62,6 +62,7 @@ func SignInHandler(r *http.Request) (interface{}, *util.HTTPError) {
   }
   payload := map[string]interface{}{
     "jwt_token": jwtToken,
+    "user_id": existingUserAuth.ID,
   }
   return payload, nil
 }
