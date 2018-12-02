@@ -44,7 +44,7 @@ func SignInHandler(r *http.Request) (interface{}, *util.HTTPError) {
   }
 
   var existingUserAuth models.UserAuth
-  existingUserAuth, err = models.SignIn(userAuth)
+  existingUserAuth, err = models.GetCredentials(userAuth.Username)
   if err != nil {
     return nil, util.Unauthorized(util.USER_DOES_NOT_EXIST_ERROR)
   }
@@ -52,8 +52,9 @@ func SignInHandler(r *http.Request) (interface{}, *util.HTTPError) {
   if err = bcrypt.CompareHashAndPassword([]byte(existingUserAuth.Password), []byte(userAuth.Password)); err != nil {
     return nil, util.Unauthorized(util.MISMATCH_PASSWORD_ERROR)
 	}
+
   var jwtToken string
-  jwtToken, err = auth.CreateJWTAuth()
+  jwtToken, err = auth.CreateJWTAuth(existingUserAuth)
   if err != nil {
     return nil, util.InternalServerError(util.JWT_ERROR)
   }

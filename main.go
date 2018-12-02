@@ -5,10 +5,11 @@ import (
   "log"
   "net/http"
   "github.com/go-chi/chi"
-  "github.com/go-chi/chi/middleware"
+  chiMiddleWare "github.com/go-chi/chi/middleware"
   "postman-twitter/config"
   "postman-twitter/database"
   "postman-twitter/util"
+  "postman-twitter/middleware"
   "postman-twitter/endpoints"
 )
 
@@ -18,11 +19,12 @@ func main() {
   defer database.DB.Close()
 
   router := chi.NewRouter()
-  router.Use(middleware.Logger)
-  router.Get("/", util.ResponseWrapper(Hello))
+  router.Use(chiMiddleWare.Logger)
+  router.Get("/", middleware.ResponseWrapper(Hello, util.AUTH_NOT_REQ))
 
-  router.Post("/signup", util.ResponseWrapper(endpoints.SignUpHandler))
-  router.Post("/signin", util.ResponseWrapper(endpoints.SignInHandler))
+  router.Post("/signup", middleware.ResponseWrapper(endpoints.SignUpHandler, util.AUTH_NOT_REQ))
+  router.Post("/signin", middleware.ResponseWrapper(endpoints.SignInHandler, util.AUTH_NOT_REQ))
+  router.Post("/follow", middleware.ResponseWrapper(endpoints.FollowHandler, util.AUTH_REQ))
 
   fmt.Println("Running on " + config.ServerConfig.Port)
   log.Fatal(http.ListenAndServe(":" + config.ServerConfig.Port, router))

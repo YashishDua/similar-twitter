@@ -1,12 +1,14 @@
 package models
 
 import (
+  "github.com/google/uuid"
   "postman-twitter/database"
 )
 
 type UserAuth struct {
-  Username string `db:"username", json:"username"`
-  Password string `db:"password", json:"password"`
+  ID        *uuid.UUID  `db:"user_id" json:"user_id"`
+  Username  string      `db:"username", json:"username"`
+  Password  string      `db:"password", json:"password"`
 }
 
 func SignUp(userAuth UserAuth) error {
@@ -23,9 +25,9 @@ func SignUp(userAuth UserAuth) error {
 }
 
 // TODO: TRANSACTIONS
-func SignIn(userAuth UserAuth) (UserAuth, error) {
+func GetCredentials(username string) (UserAuth, error) {
   sqlSelectQuery := "SELECT * FROM user_auth WHERE username = $1"
 	existingUserAuth := UserAuth{}
-	err := database.DB.Get(&existingUserAuth, sqlSelectQuery, userAuth.Username)
+	err := database.DB.Get(&existingUserAuth, sqlSelectQuery, username)
 	return existingUserAuth, err
 }

@@ -15,6 +15,12 @@
 			"revisionTime": "2018-11-06T16:38:48Z"
 		},
 		{
+			"checksumSHA1": "yNyE9MrpDJQAxOxSipSIBgBhuNQ=",
+			"path": "github.com/google/uuid",
+			"revision": "9b3b1e0f5f99ae461456d768e7d301a7acdaa2d8",
+			"revisionTime": "2018-09-17T14:00:05Z"
+		},
+		{
 			"checksumSHA1": "SVzanxaLYK43jeNWQqNs5P+uhow=",
 			"path": "github.com/jmoiron/sqlx",
 			"revision": "82935fac6c1a317907c8f43ed3f7f85ea844a78b",
