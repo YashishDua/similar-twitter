@@ -22,6 +22,7 @@ func Init() {
 	DB.SetConnMaxLifetime(time.Nanosecond)
 }
 
+// NOT YET WORKING
 func InitTestDB() {
   var err error
   DB, err = sqlx.Open("postgres", "user=yashishdua dbname=postman-twitter-testing sslmode=disable")
