@@ -16,10 +16,11 @@ const (
   USER_DOES_NOT_EXIST_ERROR string = "User doesn't exist"
   USER_ALREADY_EXIST_ERROR string = "User already exist"
   MISMATCH_PASSWORD_ERROR string = "Password didn't match"
+  LOGOUT_SESSION_ERROR string = "Unable to invalidate session token"
+
+  //JWT ERRORS
+  NO_BEARER_PRESENT string = "No Bearer in Authorization Header"
   JWT_ERROR string = "Error while creating JWT token"
   INVALID_JWT string = "Invalid Auth Token"
-  NO_BEARER_PRESENT string = "No Bearer in Authorization Header"
-
-
 
 )

@@ -3,10 +3,12 @@ package endpoints
 import (
   "net/http"
   "encoding/json"
+  "strings"
   "golang.org/x/crypto/bcrypt"
   "postman-twitter/util"
   "postman-twitter/models"
   "postman-twitter/auth"
+  "postman-twitter/redis"
 )
 
 func SignUpHandler(r *http.Request) (interface{}, *util.HTTPError) {
@@ -26,7 +28,7 @@ func SignUpHandler(r *http.Request) (interface{}, *util.HTTPError) {
     return nil, util.InternalServerError(util.SALTING_ERROR)
   }
   userAuth.Password = string(hashedPassword)
-  err = models.SignUp(userAuth)
+  err = models.StoreAuthDetails(userAuth)
   if err != nil {
     return nil, util.InternalServerError(util.USER_ALREADY_EXIST_ERROR)
   }
@@ -44,7 +46,7 @@ func SignInHandler(r *http.Request) (interface{}, *util.HTTPError) {
   }
 
   var existingUserAuth models.UserAuth
-  existingUserAuth, err = models.GetCredentials(userAuth.Username)
+  existingUserAuth, err = models.GetAuthDetails(userAuth.Username)
   if err != nil {
     return nil, util.Unauthorized(util.USER_DOES_NOT_EXIST_ERROR)
   }
@@ -62,4 +64,14 @@ func SignInHandler(r *http.Request) (interface{}, *util.HTTPError) {
     "jwt_token": jwtToken,
   }
   return payload, nil
+}
+
+func LogOutHandler(r *http.Request) (interface{}, *util.HTTPError) {
+	authStrings := strings.SplitN(r.Header.Get("Authorization"), " ", 3)
+  bearerToken := authStrings[1]
+  err := redis.StoreKeyValue(bearerToken, bearerToken)
+  if err != nil {
+    return nil, util.InternalServerError(util.LOGOUT_SESSION_ERROR)
+  }
+  return util.GENERIC_SUCCESS_RESPONSE, nil
 }

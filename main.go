@@ -11,11 +11,13 @@ import (
   "postman-twitter/util"
   "postman-twitter/middleware"
   "postman-twitter/endpoints"
+  "postman-twitter/redis"
 )
 
 func main() {
   config.Init()
   database.Init()
+  redis.Init()
   defer database.DB.Close()
 
   router := chi.NewRouter()
@@ -24,6 +26,8 @@ func main() {
 
   router.Post("/signup", middleware.ResponseWrapper(endpoints.SignUpHandler, util.AUTH_NOT_REQ))
   router.Post("/signin", middleware.ResponseWrapper(endpoints.SignInHandler, util.AUTH_NOT_REQ))
+
+  router.Post("/signout", middleware.ResponseWrapper(endpoints.LogOutHandler, util.AUTH_REQ))
   router.Post("/follow", middleware.ResponseWrapper(endpoints.FollowHandler, util.AUTH_REQ))
 
   fmt.Println("Running on " + config.ServerConfig.Port)

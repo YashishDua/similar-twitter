@@ -1,13 +1,13 @@
 package middleware
 
 import (
-  "postman-twitter/util"
   "encoding/json"
   "strings"
   "net/http"
-  "log"
   "postman-twitter/auth"
+  "postman-twitter/util"
   "postman-twitter/models"
+  "postman-twitter/redis"
 )
 
 type CustomFunction = func(*http.Request) (interface{}, *util.HTTPError)
@@ -57,12 +57,16 @@ func validateAuthorization(r *http.Request) *util.HTTPError {
 	if len(authStrings) != 2 || authStrings[0] != "Bearer" {
 		return util.Unauthorized(util.NO_BEARER_PRESENT)
 	}
+  isExpired := isInBlackList(authStrings[1])
+  if isExpired {
+    return util.Unauthorized(util.INVALID_JWT)
+  }
 	jwtAuthInfo, err := auth.DecodeJWTAuth(authStrings[1])
 	if err != nil {
 		return util.Unauthorized(err.Error())
 	}
   var existingUserAuth models.UserAuth
-  existingUserAuth, err = models.GetCredentials(jwtAuthInfo.Username)
+  existingUserAuth, err = models.GetAuthDetails(jwtAuthInfo.Username)
   if err != nil {
     return util.Unauthorized(util.INVALID_JWT)
   }
@@ -70,4 +74,16 @@ func validateAuthorization(r *http.Request) *util.HTTPError {
     return util.Unauthorized(util.INVALID_JWT)
 	}
 	return nil
+}
+
+// Check for token expiration in Redis Cache
+func isInBlackList(key string) bool {
+  value, err := redis.GetKeyValue(key)
+  if err != nil {
+    return false
+  }
+  if value == nil {
+    return false
+  }
+  return true
 }

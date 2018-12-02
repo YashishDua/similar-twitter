@@ -11,7 +11,7 @@ type UserAuth struct {
   Password  string      `db:"password", json:"password"`
 }
 
-func SignUp(userAuth UserAuth) error {
+func StoreAuthDetails(userAuth UserAuth) error {
   sqlInsertQuery := "INSERT INTO user_auth (username, password) VALUES " +
                     "(:username, :password)"
   tx := database.DB.MustBegin()
@@ -25,7 +25,7 @@ func SignUp(userAuth UserAuth) error {
 }
 
 // TODO: TRANSACTIONS
-func GetCredentials(username string) (UserAuth, error) {
+func GetAuthDetails(username string) (UserAuth, error) {
   sqlSelectQuery := "SELECT * FROM user_auth WHERE username = $1"
 	existingUserAuth := UserAuth{}
 	err := database.DB.Get(&existingUserAuth, sqlSelectQuery, username)

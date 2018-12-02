@@ -1,13 +1,8 @@
 package models
 
 import (
-  // "net/http"
-  // "encoding/json"
-  "log"
   "github.com/google/uuid"
   "postman-twitter/database"
-  // "postman-twitter/util"
-  // "postman-twitter/auth"
 )
 type Follow struct {
     FollowingUserID   uuid.UUID `db:"following_user_id"   json:"following_user_id"`
@@ -19,7 +14,6 @@ func AddFollower(follow Follow) error {
                     "(:following_user_id, :followed_by_user_id)"
   tx := database.DB.MustBegin()
   _, err := tx.NamedExec(sqlInsertQuery, follow)
-  log.Println(err)
   if err != nil {
     tx.Rollback()
     return err
