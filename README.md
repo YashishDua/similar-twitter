@@ -1,4 +1,6 @@
-# postman-twitter
+# similar-twitter
+Tried to replicate twitter backend in 2 days.
+
 * Written in GoLang
 * Uses Relational DB - Postgres (Pardon to not to use GraphQL)
 * Uses JWT over web sessions
